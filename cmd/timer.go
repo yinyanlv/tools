@@ -5,8 +5,7 @@ import (
 	"strconv"
 	"strings"
 	"time"
-
-	myTime "tools/internal/time"
+	"tools/internal/timer"
 
 	"github.com/spf13/cobra"
 )
@@ -27,7 +26,7 @@ var nowTimeCmd = &cobra.Command{
 	Short: "时间格式处理",
 	Long:  "时间格式处理",
 	Run: func(cmd *cobra.Command, args []string) {
-		nowTime := myTime.GetNowTime()
+		nowTime := timer.GetNowTime()
 		log.Printf("当前时间为：%s, %d", nowTime.Format("2006-01-02 15:04:05"), nowTime.Unix())
 	},
 }
@@ -41,7 +40,7 @@ var calculateTimeCmd = &cobra.Command{
 		var layout = "2006-01-02 15:04:05"
 
 		if calculateTime == "" {
-			currentTime = myTime.GetNowTime()
+			currentTime = timer.GetNowTime()
 		} else {
 			var err error
 			space := strings.Count(calculateTime, " ")
@@ -61,7 +60,7 @@ var calculateTimeCmd = &cobra.Command{
 			}
 		}
 
-		t, err := myTime.GetCalculateTime(currentTime, duration)
+		t, err := timer.GetCalculateTime(currentTime, duration)
 
 		if err != nil {
 			log.Fatalf("time.GetCalculateTime err: %v", err)

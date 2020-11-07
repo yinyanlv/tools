@@ -1,10 +1,8 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"tools/cmd"
-	"tools/internal/time"
 )
 
 func main() {
@@ -13,6 +11,5 @@ func main() {
 	if err != nil {
 		log.Fatalf("cmd.Execute() err: %v", err)
 	}
-
-	fmt.Println(time.GetNowTime())
+	// timer.TestFormatTime()
 }
