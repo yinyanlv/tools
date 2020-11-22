@@ -2,30 +2,37 @@ package cmd
 
 import (
 	"fmt"
+	"log"
 	createproj "tools/internal/create_project"
 
 	"github.com/spf13/cobra"
 )
 
-var repositoryURL string
 var projectName string
-var configPath string
+var repositoryURL string
 
 var createProjectCmd = &cobra.Command{
 	Use:   "create",
 	Short: "创建新工程",
 	Long:  "创建从远程仓库创建新工程",
 	Run: func(cmd *cobra.Command, args []string) {
-		err := createproj.Create(repositoryURL, projectName)
+		if repositoryURL == "" {
+			log.Fatalf("远程仓库地址不可为空！")
+			return
+		}
+		err := createproj.Create(repositoryURL, createproj.TemplateVar{
+			ProjectName: projectName,
+		})
 		if err != nil {
 			fmt.Println(err)
 			return
 		}
+		fmt.Println("---")
+		fmt.Println("项目创建成功！")
 	},
 }
 
 func init() {
+	createProjectCmd.Flags().StringVarP(&projectName, "project", "p", "", "请输入远程仓库地址")
 	createProjectCmd.Flags().StringVarP(&repositoryURL, "repository", "r", "", "请输入远程仓库地址")
-	createProjectCmd.Flags().StringVarP(&projectName, "name", "n", "", "请输入远程仓库地址")
-	createProjectCmd.Flags().StringVarP(&configPath, "config", "c", "", "请输入配置文件地址")
 }

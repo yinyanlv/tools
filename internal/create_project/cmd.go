@@ -6,7 +6,7 @@ import (
 	"os/exec"
 )
 
-func Create(url string, name string) error {
+func Create(url string, tplVar TemplateVar) error {
 	err := removeTempDir()
 	if err != nil {
 		return err
@@ -22,6 +22,11 @@ func Create(url string, name string) error {
 		return err
 	}
 
+	err = RenderAndCopyFiles(tplVar)
+	if err != nil {
+		return err
+	}
+
 	err = removeTempDir()
 	if err != nil {
 		return err
@@ -32,6 +37,7 @@ func Create(url string, name string) error {
 
 func Fetch(url string) error {
 	var stdout, stderr bytes.Buffer
+	fmt.Printf("开始从 %s 获取代码...\n", url)
 	cmd := exec.Command("git", "clone", url)
 	cmd.Dir = fmt.Sprintf("%s", TempDir)
 	cmd.Stdout = &stdout
@@ -42,5 +48,6 @@ func Fetch(url string) error {
 	}
 	out := stdout.String() + stderr.String()
 	fmt.Printf(out)
+	fmt.Printf("从 %s 获取代码成功。\n", url)
 	return nil
 }

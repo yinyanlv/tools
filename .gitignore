@@ -1,3 +1,6 @@
 .DS_Store
 .vscode/
-.idea/
+.idea
+
+# 临时存储文件夹
+.temp
